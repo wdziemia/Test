@@ -1,0 +1,15 @@
+name: Test
+
+on:
+  issue_comment:
+    types: [created]
+
+jobs:
+  Update-Screenshots:
+    if: github.event.issue.pull_request && contains(github.event.comment.body, '/test')
+    runs-on: ubuntu-latest
+    steps:
+    - name: Test
+      run: echo "Hello World"
+      
+   
