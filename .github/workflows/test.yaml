@@ -20,7 +20,7 @@ jobs:
           const commentId = '${{ github.event.comment.id }}' 
           const commentBody = '${{ github.event.comment.body }}\n\n---\n📸 Running [buildkite/pull-screenshots](${{ steps.set_url.outputs.url }}) on ${{ steps.set_url.outputs.github_pr_url }}'
 
-          console.log("${{github.event.pull_request.base.ref}}")
+          console.log("${{github.event.issue.pull_request.base.ref}}")
           
           github.rest.issues.updateComment({
             owner: context.repo.owner,
