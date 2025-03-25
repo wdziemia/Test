@@ -13,16 +13,13 @@ jobs:
       id: set_url
       run: 
         echo "url=http://www.google.com" >> $GITHUB_OUTPUT
+        echo "github_pr_url=${{github.event.issue.pull_request.html_url}}" >> $GITHUB_OUTPUT
     - name: Post Comment
       uses: "actions/github-script@v7"
       with:
         script: |
           const commentId = '${{ github.event.comment.id }}' 
-          const commentBody = '${{ github.event.comment.body }}\n\n---\n📸 Running [buildkite/pull-screenshots](${{ steps.set_url.outputs.url }})'
-          
-          console.log('PR Link: ${{github.event.issue.pull_request.html_url}}')
-          console.log('Branch1: ${{github.ref_name}}')
-          console.log('PR#: ${{github.event.issue.number}}')
+          const commentBody = '${{ github.event.comment.body }}\n\n---\n📸 Running [buildkite/pull-screenshots](${{ steps.set_url.outputs.url }}) on ${{ steps.set_url.outputs.github_pr_url }}'
           
           github.rest.issues.updateComment({
             owner: context.repo.owner,
