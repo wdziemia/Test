@@ -9,11 +9,18 @@ jobs:
     if: github.event.issue.pull_request && contains(github.event.comment.body, '/test')
     runs-on: ubuntu-latest
     steps:
-    - name: "Get PR's branch name"
+    - name: Get Branch Name
+      uses: actions/github-script@v7
       id: get_branch
-      run: |
-        PR=$(curl -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" ${{ github.event.issue.pull_request.url }})
-        echo "::set-output name=branch::$(echo $PR | jq -r '.head.ref')"
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        script: |
+          const issue = context.payload.issue;
+          const prUrl = issue.pull_request.url;
+          const prData = await github.request(prUrl);
+          const branch = prData.data.head.ref;
+          core.setOutput("branch", branch);
+          console.log(`Branch name: ${branch}`);
     - name: Set URL
       id: set_url
       run: 
