@@ -20,7 +20,9 @@ jobs:
           const commentId = '${{ github.event.comment.id }}' 
           const commentBody = '${{ github.event.comment.body }}\n\n---\n📸 Running [buildkite/pull-screenshots](${{ steps.set_url.outputs.url }})'
           
-          console.log('${{github.ref_name}}')
+          console.log('Branch2: ${{github.head_ref}}')
+          console.log('Branch1: ${{github.ref_name}}')
+          console.log('PR#: ${{github.event.issue.number}}')
           
           github.rest.issues.updateComment({
             owner: context.repo.owner,
