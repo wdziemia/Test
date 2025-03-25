@@ -13,11 +13,11 @@ jobs:
       uses: "actions/github-script@v7"
       with:
         script: |
-          github.rest.issues.createComment({
-            issue_number: context.issue.number,
+          github.rest.issues.updateComment({
             owner: context.repo.owner,
             repo: context.repo.repo,
-            body: '🚀📸 Updating Screenshots: TEST'
+            comment_id: github.event.comment.id,
+            body: github.event.comment.body + "\n Test'
           })
 
       
