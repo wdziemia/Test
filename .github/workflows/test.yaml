@@ -13,7 +13,6 @@ jobs:
       id: set_url
       run: 
         echo "url=http://www.google.com" >> $GITHUB_OUTPUT
-        echo "job=http://www.google.com" >> $GITHUB_OUTPUT
     - name: Post Comment
       uses: "actions/github-script@v7"
       with:
