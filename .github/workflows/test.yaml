@@ -17,7 +17,7 @@ jobs:
             owner: context.repo.owner,
             repo: context.repo.repo,
             comment_id: github.event.comment.id,
-            body: github.event.comment.body + "\n Test'
+            body: '${{ github.event.comment.body }} 👋 Thanks for reporting!'
           })
 
       
