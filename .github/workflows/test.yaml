@@ -17,7 +17,7 @@ jobs:
       with:
         script: |
           const commentId = '${{ github.event.comment.id }}' 
-          const commentBody = '${{ github.event.comment.body }} --- 📸 Running [${{ steps.set_url.outputs.url }}](buildkite/pull-screenshots)'
+          const commentBody = '${{ github.event.comment.body }} \n---\n 📸 Running [${{ steps.set_url.outputs.url }}](buildkite/pull-screenshots)'
           
           github.rest.issues.updateComment({
             owner: context.repo.owner,
