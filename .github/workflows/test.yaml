@@ -20,7 +20,7 @@ jobs:
           const commentId = '${{ github.event.comment.id }}' 
           const commentBody = '${{ github.event.comment.body }}\n\n---\n📸 Running [buildkite/pull-screenshots](${{ steps.set_url.outputs.url }})'
           
-          console.log('PR Link: ${{github.event.issue.pull_request.url}}')
+          console.log('PR Link: ${{github.event.issue.pull_request.html_url}}')
           console.log('Branch1: ${{github.ref_name}}')
           console.log('PR#: ${{github.event.issue.number}}')
           
