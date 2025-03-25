@@ -11,13 +11,15 @@ jobs:
     steps:
     - name: Set URL
       id: set_url
-      run: echo "url=http://www.google.com" >> $GITHUB_OUTPUT
+      run: 
+        echo "url=http://www.google.com" >> $GITHUB_OUTPUT
+        echo "job=http://www.google.com" >> $GITHUB_OUTPUT
     - name: Post Comment
       uses: "actions/github-script@v7"
       with:
         script: |
           const commentId = '${{ github.event.comment.id }}' 
-          const commentBody = '${{ github.event.comment.body }} \n---\n 📸 Running [${{ steps.set_url.outputs.url }}](buildkite/pull-screenshots)'
+          const commentBody = '${{ github.event.comment.body }}\n\n---\n📸 Running [buildkite/pull-screenshots)'](${{ steps.set_url.outputs.url }}
           
           github.rest.issues.updateComment({
             owner: context.repo.owner,
