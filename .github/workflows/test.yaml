@@ -17,12 +17,12 @@ jobs:
       with:
         script: |
           const commentId = '${{ github.event.comment.id }}' 
-          const commentBody = '${{ github.event.comment.body }} \n 📸 Running Test'
+          const commentBody = '${{ github.event.comment.body }} \n 📸 Running ${{ steps.set_url.outputs.url }}'
           
           github.rest.issues.updateComment({
             owner: context.repo.owner,
             repo: context.repo.repo,
-            comment_id: commentId
+            comment_id: commentId,
             body: commentBody
           })
 
