@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Get Branch Name
-      uses: actions/github-script@v7
+      uses: "actions/github-script@v7"
       id: get_branch
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
