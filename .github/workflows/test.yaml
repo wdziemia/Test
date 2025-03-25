@@ -9,6 +9,10 @@ jobs:
     if: github.event.issue.pull_request && contains(github.event.comment.body, '/test')
     runs-on: ubuntu-latest
     steps:
+    - name: Set Branch
+      id: set_branch
+      run: 
+        echo "branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}" >> $GITHUB_OUTPUT
     - name: Set URL
       id: set_url
       run: 
@@ -20,7 +24,7 @@ jobs:
           const commentId = '${{ github.event.comment.id }}' 
           const commentBody = '${{ github.event.comment.body }}\n\n---\n📸 Running [buildkite/pull-screenshots](${{ steps.set_url.outputs.url }}) on ${{ steps.set_url.outputs.github_pr_url }}'
 
-          console.log("${{github.event.issue.pull_request.base.ref}}")
+          console.log("${{ steps.set_branch.outputs.branch }}")
           
           github.rest.issues.updateComment({
             owner: context.repo.owner,
