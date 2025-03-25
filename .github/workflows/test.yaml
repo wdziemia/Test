@@ -13,16 +13,14 @@ jobs:
       uses: "actions/github-script@v7"
       with:
         script: |
-          console.log('Comment: ${{ github.event.comment }}');
-          console.log('Comment Body: ${{ github.event.comment.body }}');
-          console.log('Comment Id: ${{ github.event.comment.id }}');
-          
+          const commentId = '${{ github.event.comment.id }}' 
+          const commentBody = '${{ github.event.comment.body }} 👋 Thanks for reporting!'
           
           github.rest.issues.updateComment({
             owner: context.repo.owner,
             repo: context.repo.repo,
-            comment_id: github.event.comment.id,
-            body: '${{ github.event.comment.body }} 👋 Thanks for reporting!'
+            comment_id: commentId,
+            body: commentBody
           })
 
       
