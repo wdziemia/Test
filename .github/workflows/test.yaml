@@ -15,17 +15,17 @@ jobs:
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         script: |
+          // Get branch name for next step
           const issue = context.payload.issue;
           const prUrl = issue.pull_request.url;
           const prData = await github.request(prUrl);
           const branch = prData.data.head.ref;
           core.setOutput("branch", branch);
 
-          if (contains(github.event.comment.body, 'android')) {
-              core.setOutput("platform", "android");
-          } else {
-              core.setOutput("platform", "ios");
-          }
+          // Check comment body for "platform"
+          const comment_body = issue.body || "";
+          const platform = comment_body.toLowerCase().includes("android") ? "android" : "ios";
+          core.setOutput("platform", platform);
     - name: Set URL
       id: set_url
       run: 
