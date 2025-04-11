@@ -34,8 +34,9 @@ jobs:
       uses: "actions/github-script@v7"
       with:
         script: |
-          const commentId = '${{ github.event.comment.id }}' 
-          const commentBody = '${{ github.event.comment.body }}\n\n---\n📸 Running [buildkite/pull-screenshots](${{ steps.set_url.outputs.url }}) on ${{ steps.set_url.outputs.github_pr_url }}'
+          const commentId = '${{ github.event.comment.id }}'
+          const comment_body = (context.payload.comment?.body || "").replace(/[\r\n]/g, '');
+          const comment_body_updated = '${{ comment_body }}\n\n---\n📸 Running [buildkite/pull-screenshots](${{ steps.set_url.outputs.url }}) on ${{ steps.set_url.outputs.github_pr_url }}'
 
           console.log("${{ steps.set_inputs.outputs.branch }}")
           console.log("${{ steps.set_inputs.outputs.platform }}")
@@ -44,7 +45,7 @@ jobs:
             owner: context.repo.owner,
             repo: context.repo.repo,
             comment_id: commentId,
-            body: commentBody
+            body: comment_body_updated
           })
 
       
