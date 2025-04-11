@@ -23,7 +23,7 @@ jobs:
           core.setOutput("branch", branch);
 
           // Check comment body for "platform"
-          const comment_body = context.payload.comment?.body?.toLowerCase() || "";
+          const comment_body = (context.payload.comment?.body || "").replace(/[\r\n]/g, '').toLowerCase();
           const platform = comment_body.includes("android") ? "android" : comment_body.includes("ios") ? "ios" : "unknown";
           core.setOutput("platform", platform);
     - name: Set URL
