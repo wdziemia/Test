@@ -6,47 +6,35 @@ on:
 
 jobs:
   Update-Screenshots:
-    if: github.event.issue.pull_request && contains(github.event.comment.body, '/test')
+    if: github.event.issue.pull_request && contains(github.event.comment.body, '/push browserstack')
     runs-on: ubuntu-latest
     steps:
-    - name: Get Step Inputs
+    - name: Resolve Buildkite Params
       uses: "actions/github-script@v7"
-      id: set_inputs
+      id: buildkite_params
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         script: |
-          // Get branch name for next step
-          const issue = context.payload.issue;
-          const prUrl = issue.pull_request.url;
-          const prData = await github.request(prUrl);
-          const branch = prData.data.head.ref;
-          core.setOutput("branch", branch);
-
-          // Check comment body for "platform"
           const comment_body = (context.payload.comment?.body || "").replace(/[\r\n]/g, '').toLowerCase();
+          
+          // Check command for "platform"
           const platform = comment_body.includes("android") ? "android" : comment_body.includes("ios") ? "ios" : "unknown";
           core.setOutput("platform", platform);
-    - name: Set URL
-      id: set_url
-      run: 
-        echo "github_pr_url=${{github.event.issue.pull_request.html_url}}" >> $GITHUB_OUTPUT
-    - name: Post Comment
+          
+          // Check command for "app"
+          const app = comment_body.includes("dash") ? "dash" : comment_body.includes("dbapp") ? "dbapp" : "unknown";
+          core.setOutput("app", app);
+    - name: Comment ACK
       uses: "actions/github-script@v7"
       with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
         script: |
-          const commentId = '${{ github.event.comment.id }}'
+          const comment_id = '${{ github.event.comment.id }}'
           const comment_body = (context.payload.comment?.body || "").replace(/[\r\n]/g, '');
-          const comment_body_updated = comment_body + '\n\n---\n📸 Running [buildkite/pull-screenshots](${{ steps.set_url.outputs.url }}) on ${{ steps.set_url.outputs.github_pr_url }}'
-
-          console.log("${{ steps.set_inputs.outputs.branch }}")
-          console.log("${{ steps.set_inputs.outputs.platform }}")
-          
+          const comment_body_updated = comment_body + '\n\n---\n🚀 📲 [@buildkite/browserstack-uploader](https://buildkite.com/dropbox/browserstack-build-uploader) for ${{ steps.buildkite_params.outputs.app }}-${{ steps.buildkite_params.outputs.platform }} for ${{github.event.issue.pull_request.html_url}}'
           github.rest.issues.updateComment({
             owner: context.repo.owner,
             repo: context.repo.repo,
-            comment_id: commentId,
+            comment_id: comment_id,
             body: comment_body_updated
-          })
-
-      
-   
+            })
