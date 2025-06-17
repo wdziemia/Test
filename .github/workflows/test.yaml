@@ -38,3 +38,29 @@ jobs:
             comment_id: comment_id,
             body: comment_body_updated
             })
+    - name: Complete ACK
+      uses: "actions/github-script@v7"
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        script: |
+          const comment_id = '${{ github.event.comment.id }}'
+          const comment_body = (context.payload.comment?.body || "").replace(/[\r\n]/g, '');
+          const state = comment_body.includes("pass") ? 'passed' : 'failed'
+          if (state !== 'passed') {
+            const comment_body_updated = comment_body + '\n\n---\n❌ 📲️ [@buildkite/browserstack-uploader](http://www.example.com) Failed'
+            github.rest.issues.updateComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              comment_id: comment_id,
+              body: comment_body_updated
+            })
+          } else {
+            console.log("${{ steps.start_pipeline.outputs.json }}")
+            const comment_body_updated = comment_body + '\n\n---\n✅ 📲 [@buildkite/browserstack-uploader](http://www.example.com) - http://example.com/build/url'
+            github.rest.issues.updateComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              comment_id: comment_id,
+              body: comment_body_updated
+            })
+          }
