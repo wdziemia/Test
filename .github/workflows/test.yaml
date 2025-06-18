@@ -51,9 +51,9 @@ jobs:
           const state = 'passed';
           const job_url = 'http://example.com';
           if (state !== 'passed') {
-            comment_body_updated = comment_body_updated + '\n\n---\n❌ 📲️ [@buildkite/browserstack-uploader](${{ job_url }}) Uploader Failed'
+            comment_body_updated = comment_body_updated + '\n\n---\n❌ 📲️ [@buildkite/browserstack-uploader](${job_url}) Uploader Failed'
           } else {
-            comment_body_updated = comment_body_updated + '\n\n---\n✅ 📲 [@buildkite/browserstack-uploader](${{ job_url }}) http://example.com/build/url'
+            comment_body_updated = comment_body_updated + '\n\n---\n✅ 📲 [@buildkite/browserstack-uploader](${job_url}) http://example.com/build/url'
           }
 
           const comment_id = '${{ github.event.comment.id }}'
