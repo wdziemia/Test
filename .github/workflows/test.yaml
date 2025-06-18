@@ -47,7 +47,7 @@ jobs:
           console.log('Json: []')
           
           const comment_body = (context.payload.comment?.body || "").replace(/[\r\n]/g, '');
-          const comment_body_updated = comment_body
+          const comment_body_updated = '${comment_body}'
           const state = 'passed';
           const job_url = 'http://example.com';
           if (state !== 'passed') {
